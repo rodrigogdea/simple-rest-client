@@ -43,4 +43,14 @@ Is a simple rest client wrapping apache http client.
 
         String result = response.asString();
 ```
+###With Authentication###
+
+```java
+        URL url = new URL("http://localhost:3333");
+        Response response =  new SimpleRestClient(url)
+                 .withAuth("user", "pass")
+                 .get("").request();
+
+        String result = response.asString();
+```
 

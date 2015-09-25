@@ -15,6 +15,8 @@ public abstract class RestClient {
         this.baseUrl = baseUrl;
     }
 
+    public abstract RestClient withAuth(String username, String password);
+
     public abstract GetBuilder get(String... uriFragment);
 
     public abstract WithBodyBuilder post(String... uriFragment);

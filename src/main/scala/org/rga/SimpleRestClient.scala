@@ -4,10 +4,11 @@ import java.net.{URI, URL}
 import java.nio.charset.Charset
 import java.util
 import java.util.Collections
+import org.apache.http.auth.{UsernamePasswordCredentials, AuthScope}
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods._
 import org.apache.http.entity.StringEntity
-import org.apache.http.impl.client.{CloseableHttpClient, HttpClientBuilder}
+import org.apache.http.impl.client.{BasicCredentialsProvider, CloseableHttpClient, HttpClientBuilder}
 import org.apache.http.message.{BasicNameValuePair, BasicHeader}
 import org.apache.http.util.EntityUtils
 
@@ -16,11 +17,13 @@ import scala.collection.JavaConversions._
 
 class SimpleRestClient(baseUrl: URL, ignoreSelfCertificate: Boolean = true) extends RestClient(baseUrl) {
 
+  val credentialsProvider: BasicCredentialsProvider = new BasicCredentialsProvider()
+
   private val httpClient = {
     val httpClientBuilder: HttpClientBuilder = HttpClientBuilder.create
     if (ignoreSelfCertificate) httpClientBuilder.setSSLSocketFactory(TrustingSSLSocketFactory.get)
-    httpClientBuilder.setDefaultHeaders(Collections.singletonList(new BasicHeader("Accept", "application/json")))
-      .build
+
+    httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider).build
   }
 
   override def get(uriFragment: String*): GetBuilder = new GetBuilder(baseUrl, httpClient, uriFragment, new HttpGet())
@@ -30,6 +33,13 @@ class SimpleRestClient(baseUrl: URL, ignoreSelfCertificate: Boolean = true) exte
   override def put(uriFragment: String*): WithBodyBuilder = new WithBodyBuilder(baseUrl, httpClient, uriFragment, new HttpPut())
 
   override def patch(uriFragment: String*): WithBodyBuilder = new WithBodyBuilder(baseUrl, httpClient, uriFragment, new HttpPatch())
+
+  override def withAuth(username: String, password: String): RestClient = {
+    credentialsProvider.setCredentials(
+      new AuthScope(baseUrl.getHost, baseUrl.getPort),
+      new UsernamePasswordCredentials(username, password))
+    this
+  }
 
 }
 

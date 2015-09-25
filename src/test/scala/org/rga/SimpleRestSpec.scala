@@ -87,6 +87,23 @@ class SimpleRestSpec extends mutable.Specification {
     response.code must_== 200
   }
 
+  "With Auth..." >> new HttpServerMocked {
+    stubFor(
+      get(urlEqualTo("/"))
+//        .withHeader("Authorization", WireMock.containing("Basic"))
+        .willReturn(aResponse()
+        .withStatus(200)
+        .withBody("{\"success\":true}")))
+
+    val url: URL = new URL("https://localhost:3334")
+    val response: Response = new SimpleRestClient(url)
+      .withAuth("user", "pass")
+      .get("").request()
+
+    response.asString must_== "{\"success\":true}"
+    response.code must_== 200
+  }
+
 }
 
 trait HttpServerMocked extends BeforeAfter {
