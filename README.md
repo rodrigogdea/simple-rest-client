@@ -3,8 +3,12 @@
 Is a simple rest client wrapping apache http client.
 
 ##Installing##
-```
-//To be define... 
+```xml
+    <dependency>
+        <groupId>org.rga</groupId>
+        <artifactId>simple-rest-client_2.11</artifactId>
+        <version>1.0</version>
+    </dependency>
 ```
 
 ##Usage##
