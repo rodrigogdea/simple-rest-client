@@ -1,8 +1,8 @@
-#Simple Rest Client#
+# Simple Rest Client
 
 Is a simple rest client wrapping apache http client.
 
-##Installing##
+## Installing
 ```xml
     <dependency>
         <groupId>org.rga</groupId>
@@ -11,9 +11,9 @@ Is a simple rest client wrapping apache http client.
     </dependency>
 ```
 
-##Usage##
+## Usage
 
-###GET###
+### GET
 
 ```java
     URL url = new URL("https://somehost:3334");
@@ -22,7 +22,7 @@ Is a simple rest client wrapping apache http client.
     assertTrue(response.code() == 200);
 ```
 
-###POST###
+### POST
 
 ```java
         URL url = new URL("http://other:3333");
@@ -35,7 +35,7 @@ Is a simple rest client wrapping apache http client.
         String result = response.asString();
 ```
 
-###PUT###
+### PUT
 
 ```java
         URL url = new URL("http://localhost:3333");
@@ -47,7 +47,7 @@ Is a simple rest client wrapping apache http client.
 
         String result = response.asString();
 ```
-###With Authentication###
+### With Authentication
 
 ```java
         URL url = new URL("http://localhost:3333");
